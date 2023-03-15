@@ -1,0 +1,3 @@
+[submodule "textx-pyecoregen"]
+	path = textx-pyecoregen
+	url = git@github.com:ipa-rwu/textx-pyecoregen.git
