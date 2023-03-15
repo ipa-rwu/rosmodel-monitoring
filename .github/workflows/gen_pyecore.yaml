@@ -1,0 +1,41 @@
+name: Generate_pyecore_model
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11"]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          submodules: 'true'
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Set up venv
+        run: |
+          pip install --upgrade pip
+          python3 -m venv venv
+          source venv/bin/activate
+          echo "VIRTUAL ENV:" $VIRTUAL_ENV
+          echo PATH=$PATH >> $GITHUB_ENV
+      - name: Install packages
+        run: |
+          ./install.sh
+      - name: Generate pyecore from emf
+        run: |
+          venv/*/pip install autopep8
+          venv/*/pip install isort
+          ./gen_metamodel_pyecore.sh
+          status=$(git status --porcelain)
+          if [ -n "${status// }" ];
+          then
+            echo "Error, the  following files need to be updated and committed:";
+            echo "$status"; git diff;
+            exit 1;
+          fi
