@@ -1,8 +1,8 @@
 """Definition of meta model 'primitives'."""
 from functools import partial
+
 import pyecore.ecore as Ecore
 from pyecore.ecore import *
-
 
 name = 'primitives'
 nsURI = 'http://www.ipa.fraunhofer.de/primitives'

@@ -31,4 +31,6 @@ sed -i 's/^from ros/from pythonic_rosmodel.metamodel_gen.ros/' pythonic-rosmodel
 sed -i 's/^from primitives/from pythonic_rosmodel.metamodel_gen.primitives/' pythonic-rosmodel/pythonic_rosmodel/metamodel_gen/ros/__init__.py
 sed -i 's/^from type/from pyecore.type/' pythonic-rosmodel/pythonic_rosmodel/metamodel_gen/ros/ros.py
 
+isort pythonic-rosmodel/pythonic_rosmodel/metamodel_gen
+
 find pythonic-rosmodel/pythonic_rosmodel/metamodel_gen -name '*.py' -exec autopep8 --in-place '{}' \;

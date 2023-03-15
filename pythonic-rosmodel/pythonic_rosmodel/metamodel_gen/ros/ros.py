@@ -1,9 +1,9 @@
 """Definition of meta model 'ros'."""
 from functools import partial
+
 import pyecore.ecore as Ecore
 from pyecore.ecore import *
-from pyecore.type import Base64Binary, Double, Int, Boolean, DateTime
-
+from pyecore.type import Base64Binary, Boolean, DateTime, Double, Int
 
 name = 'ros'
 nsURI = 'http://www.ipa.fraunhofer.de/ros'
