@@ -1,0 +1,57 @@
+
+    digraph textX {
+    fontname = "Bitstream Vera Sans"
+    fontsize = 8
+    node[
+        shape=record,
+        style=filled,
+        fillcolor=aliceblue
+    ]
+    nodesep = 0.3
+    edge[dir=black,arrowtail=empty]
+
+
+21859088[ label="{MessageDefinition|}"]
+
+21906080[ label="{TopicSpec|name: EString\l}"]
+
+21918352[ label="{Publisher|name: EString\l}"]
+
+21861744[ label="{*Namespace|}"]
+
+23325104[ label="{GlobalNamespace|parts: list[GraphName]\l}"]
+
+23329248[ label="{RelativeNamespace_Impl|parts: list[GraphName]\l}"]
+
+23332192[ label="{PrivateNamespace|parts: list[GraphName]\l}"]
+
+21594464[ label="{MessagePart|Type: AbstractType\lData: EString\l}"]
+
+23344512[ label="{ParameterString|value: EString\l}"]
+
+
+
+21859088 -> 21594464[arrowtail=diamond, dir=both, headlabel="MessagePart 1..*"]
+21906080 -> 21859088[arrowtail=diamond, dir=both, headlabel="message "]
+21918352 -> 21906080[headlabel="message "]
+21918352 -> 21861744[arrowtail=diamond, dir=both, headlabel="namespace "]
+21861744 -> 23325104 [dir=back]
+21861744 -> 23329248 [dir=back]
+21861744 -> 23332192 [dir=back]
+match_rules [ shape=plaintext, label=< <table>
+	<tr>
+		<td><b>AbstractType</b></td><td>bool</td>
+	</tr>
+	<tr>
+		<td><b>EString</b></td><td>STRING|ID</td>
+	</tr>
+	<tr>
+		<td><b>GraphName</b></td><td>GraphName</td>
+	</tr>
+	<tr>
+		<td><b>bool</b></td><td>bool</td>
+	</tr>
+</table> >]
+
+
+}

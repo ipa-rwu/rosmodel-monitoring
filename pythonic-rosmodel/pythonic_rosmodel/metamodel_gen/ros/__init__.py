@@ -3,24 +3,25 @@ from pythonic_rosmodel.metamodel_gen.primitives import MessagePart
 
 from . import ros
 from .ros import (ActionClient, ActionServer, ActionSpec, AmentPackage,
-                  Artifact, CatkinPackage, Dependency, ExternalDependency,
-                  GlobalNamespace, GraphName, InterfaceType, MessageDefinition,
-                  Namespace, Node, Package, PackageDependency, PackageSet,
-                  Parameter, ParameterAny, ParameterAnyType,
-                  ParameterArrayType, ParameterBase64, ParameterBase64Type,
-                  ParameterBoolean, ParameterBooleanType, ParameterDate,
-                  ParameterDateType, ParameterDouble, ParameterDoubleType,
-                  ParameterInteger, ParameterIntegerType, ParameterListType,
-                  ParameterSequence, ParameterString, ParameterStringType,
-                  ParameterStruct, ParameterStructMember, ParameterStructType,
-                  ParameterStructTypeMember, ParameterType, ParameterValue,
-                  PrivateNamespace, Publisher, QualityOfService,
-                  RelativeNamespace, ServiceClient, ServiceServer, ServiceSpec,
-                  SpecBase, Subscriber, TopicSpec, eClass, eClassifiers,
-                  getEClassifier, name, nsPrefix, nsURI)
+                  ArrayTopicSpecRef, Artifact, CatkinPackage, Dependency,
+                  ExternalDependency, GlobalNamespace, GraphName,
+                  InterfaceType, MessageDefinition, Namespace, Node, Package,
+                  PackageDependency, PackageSet, Parameter, ParameterAny,
+                  ParameterAnyType, ParameterArrayType, ParameterBase64,
+                  ParameterBase64Type, ParameterBoolean, ParameterBooleanType,
+                  ParameterDate, ParameterDateType, ParameterDouble,
+                  ParameterDoubleType, ParameterInteger, ParameterIntegerType,
+                  ParameterListType, ParameterSequence, ParameterString,
+                  ParameterStringType, ParameterStruct, ParameterStructMember,
+                  ParameterStructType, ParameterStructTypeMember,
+                  ParameterType, ParameterValue, PrivateNamespace, Publisher,
+                  QualityOfService, RelativeNamespace, ServiceClient,
+                  ServiceServer, ServiceSpec, SpecBase, Subscriber, TopicSpec,
+                  TopicSpecRef, eClass, eClassifiers, getEClassifier, name,
+                  nsPrefix, nsURI)
 
-__all__ = ['Node', 'Package', 'Dependency', 'ServiceSpec', 'ServiceServer', 'TopicSpec', 'PackageDependency', 'ExternalDependency', 'CatkinPackage', 'Publisher', 'Artifact', 'SpecBase', 'Subscriber', 'ServiceClient', 'PackageSet', 'ActionSpec', 'ActionServer', 'ActionClient', 'MessageDefinition', 'Namespace', 'GlobalNamespace', 'RelativeNamespace', 'PrivateNamespace', 'InterfaceType', 'GraphName', 'ParameterType', 'ParameterListType', 'ParameterStructType',
-           'ParameterIntegerType', 'ParameterStringType', 'ParameterDoubleType', 'Parameter', 'ParameterDateType', 'ParameterBooleanType', 'ParameterBase64Type', 'ParameterAnyType', 'ParameterStructTypeMember', 'ParameterArrayType', 'ParameterValue', 'ParameterAny', 'ParameterString', 'ParameterBase64', 'ParameterInteger', 'ParameterDouble', 'ParameterBoolean', 'ParameterSequence', 'ParameterStruct', 'ParameterStructMember', 'ParameterDate', 'AmentPackage', 'QualityOfService']
+__all__ = ['Node', 'Package', 'Dependency', 'ServiceSpec', 'ServiceServer', 'TopicSpec', 'PackageDependency', 'ExternalDependency', 'CatkinPackage', 'Publisher', 'Artifact', 'SpecBase', 'Subscriber', 'ServiceClient', 'PackageSet', 'ActionSpec', 'ActionServer', 'ActionClient', 'MessageDefinition', 'Namespace', 'GlobalNamespace', 'RelativeNamespace', 'PrivateNamespace', 'InterfaceType', 'GraphName', 'ParameterType', 'ParameterListType', 'ParameterStructType', 'ParameterIntegerType',
+           'ParameterStringType', 'ParameterDoubleType', 'Parameter', 'ParameterDateType', 'ParameterBooleanType', 'ParameterBase64Type', 'ParameterAnyType', 'ParameterStructTypeMember', 'ParameterArrayType', 'ParameterValue', 'ParameterAny', 'ParameterString', 'ParameterBase64', 'ParameterInteger', 'ParameterDouble', 'ParameterBoolean', 'ParameterSequence', 'ParameterStruct', 'ParameterStructMember', 'ParameterDate', 'AmentPackage', 'QualityOfService', 'TopicSpecRef', 'ArrayTopicSpecRef']
 
 eSubpackages = []
 eSuperPackage = None
@@ -73,6 +74,8 @@ ParameterArrayType.default.eType = ParameterSequence
 ParameterSequence.value.eType = ParameterValue
 ParameterStruct.value.eType = ParameterStructMember
 ParameterStructMember.value.eType = ParameterValue
+TopicSpecRef.TopicSpec.eType = TopicSpec
+ArrayTopicSpecRef.TopicSpec.eType = TopicSpec
 Package.spec.eType = SpecBase
 SpecBase.package.eType = Package
 SpecBase.package.eOpposite = Package.spec
@@ -94,5 +97,5 @@ for pack in register_packages:
     global_registry[pack.nsURI] = pack
 
 
-classes = [Node, Package, Dependency, ServiceSpec, ServiceServer, TopicSpec, PackageDependency, ExternalDependency, CatkinPackage, Publisher, Artifact, SpecBase, Subscriber, ServiceClient, PackageSet, ActionSpec, ActionServer, ActionClient, MessageDefinition, Namespace, GlobalNamespace, RelativeNamespace, PrivateNamespace, InterfaceType, GraphName, ParameterType, ParameterListType, ParameterStructType,
-           ParameterIntegerType, ParameterStringType, ParameterDoubleType, Parameter, ParameterDateType, ParameterBooleanType, ParameterBase64Type, ParameterAnyType, ParameterStructTypeMember, ParameterArrayType, ParameterValue, ParameterAny, ParameterString, ParameterBase64, ParameterInteger, ParameterDouble, ParameterBoolean, ParameterSequence, ParameterStruct, ParameterStructMember, ParameterDate, AmentPackage, QualityOfService]
+classes = [Node, Package, Dependency, ServiceSpec, ServiceServer, TopicSpec, PackageDependency, ExternalDependency, CatkinPackage, Publisher, Artifact, SpecBase, Subscriber, ServiceClient, PackageSet, ActionSpec, ActionServer, ActionClient, MessageDefinition, Namespace, GlobalNamespace, RelativeNamespace, PrivateNamespace, InterfaceType, GraphName, ParameterType, ParameterListType, ParameterStructType, ParameterIntegerType,
+           ParameterStringType, ParameterDoubleType, Parameter, ParameterDateType, ParameterBooleanType, ParameterBase64Type, ParameterAnyType, ParameterStructTypeMember, ParameterArrayType, ParameterValue, ParameterAny, ParameterString, ParameterBase64, ParameterInteger, ParameterDouble, ParameterBoolean, ParameterSequence, ParameterStruct, ParameterStructMember, ParameterDate, AmentPackage, QualityOfService, TopicSpecRef, ArrayTopicSpecRef]

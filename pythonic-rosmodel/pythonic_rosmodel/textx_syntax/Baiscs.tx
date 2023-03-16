@@ -1,0 +1,38 @@
+    Namespace:
+        GlobalNamespace | RelativeNamespace_Impl | PrivateNamespace;
+
+    GraphName :
+        'GraphName' ;
+
+    GlobalNamespace:
+        'GlobalNamespace'
+            ('[' parts+=GraphName ( "," parts+=GraphName)* ']' )?;
+
+    RelativeNamespace_Impl:
+        'RelativeNamespace'
+            ('[' parts+=GraphName ( "," parts+=GraphName)* ']' )?;
+
+    PrivateNamespace:
+        'PrivateNamespace'
+            ('[' parts+=GraphName ( "," parts+=GraphName)* ']' )?;
+
+    AbstractType:
+        bool ;
+
+    bool:
+	    'bool'
+	;
+
+    MessagePart:
+            Type = AbstractType
+            Data =EString
+    ;
+
+
+
+
+    ParameterString:
+	    value=EString;
+
+    EString:
+	    STRING | ID;

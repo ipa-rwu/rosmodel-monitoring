@@ -202,30 +202,6 @@ class stringArray(AbstractType):
         super().__init__(**kwargs)
 
 
-class TopicSpecRef(AbstractType):
-
-    TopicSpec = EReference(ordered=True, unique=True,
-                           containment=False, derived=False)
-
-    def __init__(self, *, TopicSpec=None, **kwargs):
-        super().__init__(**kwargs)
-
-        if TopicSpec is not None:
-            self.TopicSpec = TopicSpec
-
-
-class ArrayTopicSpecRef(AbstractType):
-
-    TopicSpec = EReference(ordered=True, unique=True,
-                           containment=False, derived=False)
-
-    def __init__(self, *, TopicSpec=None, **kwargs):
-        super().__init__(**kwargs)
-
-        if TopicSpec is not None:
-            self.TopicSpec = TopicSpec
-
-
 class Header(AbstractType):
 
     def __init__(self, **kwargs):
