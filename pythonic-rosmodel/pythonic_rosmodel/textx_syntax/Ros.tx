@@ -1,0 +1,18 @@
+import Baiscs
+
+MessageDefinition:
+    MessagePart+=MessagePart*
+;
+
+TopicSpec:
+    'msg:'name=EString
+        'message:' (
+            message=MessageDefinition
+            )?
+;
+
+Publisher:
+    name=EString':'
+        'type:' message=[TopicSpec|EString]
+        ('ns:' namespace=Namespace)?
+;
