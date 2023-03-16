@@ -1,6 +1,14 @@
 name: Generate_pyecore_model
 
-on: push
+on:
+  push:
+    paths-ignore:
+      - '**/*.md'
+  pull_request:
+    paths-ignore:
+      - '**/*.md'
+  schedule:
+    - cron: "0 0 * * *" # every day at midnight
 
 jobs:
   build:
