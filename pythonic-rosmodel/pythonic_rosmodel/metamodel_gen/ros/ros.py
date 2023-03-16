@@ -4,6 +4,7 @@ from functools import partial
 import pyecore.ecore as Ecore
 from pyecore.ecore import *
 from pyecore.type import Base64Binary, Boolean, DateTime, Double, Int
+from pythonic_rosmodel.metamodel_gen.primitives import AbstractType
 
 name = 'ros'
 nsURI = 'http://www.ipa.fraunhofer.de/ros'
@@ -721,6 +722,30 @@ class AmentPackage(Package):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
+
+class TopicSpecRef(AbstractType):
+
+    TopicSpec = EReference(ordered=True, unique=True,
+                           containment=False, derived=False)
+
+    def __init__(self, *, TopicSpec=None, **kwargs):
+        super().__init__(**kwargs)
+
+        if TopicSpec is not None:
+            self.TopicSpec = TopicSpec
+
+
+class ArrayTopicSpecRef(AbstractType):
+
+    TopicSpec = EReference(ordered=True, unique=True,
+                           containment=False, derived=False)
+
+    def __init__(self, *, TopicSpec=None, **kwargs):
+        super().__init__(**kwargs)
+
+        if TopicSpec is not None:
+            self.TopicSpec = TopicSpec
 
 
 class PrivateNamespace(RelativeNamespace):

@@ -39,7 +39,7 @@ jobs:
         run: |
           venv/*/pip install autopep8
           venv/*/pip install isort
-          ./gen_metamodel_pyecore.sh
+          ./gen_metamodel_pyecore.sh ipa-rwu/ros-model rwu/fix/YamlMigrationSystem pythonic-rosmodel/pythonic_rosmodel/metamodel_gen
           status=$(git status --porcelain)
           if [ -n "${status// }" ];
           then
