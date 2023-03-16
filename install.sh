@@ -10,5 +10,8 @@ if [ ! -d venv ]; then
     ${pycmd:?Could not determine python executable} -mvenv venv
 fi
 
+venv/*/pip install -e textx-pyecoregen
+venv/*/pip install -e pythonic-rosmodel
+
 venv/*/pip install --find-links wheels -e textx-pyecoregen
 venv/*/pip install --find-links wheels -e pythonic-rosmodel
