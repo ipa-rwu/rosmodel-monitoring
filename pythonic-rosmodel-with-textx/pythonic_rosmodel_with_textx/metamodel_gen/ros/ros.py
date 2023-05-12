@@ -4,7 +4,7 @@ from functools import partial
 import pyecore.ecore as Ecore
 from pyecore.ecore import *
 from pyecore.type import Base64Binary, Boolean, DateTime, Double, Int
-from pythonic_rosmodel.metamodel_gen.primitives import AbstractType
+from pythonic_rosmodel_with_textx.metamodel_gen.primitives import AbstractType
 
 name = 'ros'
 nsURI = 'http://www.ipa.fraunhofer.de/ros'
@@ -15,7 +15,18 @@ eClass = EPackage(name=name, nsURI=nsURI, nsPrefix=nsPrefix)
 eClassifiers = {}
 getEClassifier = partial(Ecore.getEClassifier, searchspace=eClassifiers)
 
+
 GraphName = EDataType('GraphName', instanceClassName='java.lang.String')
+
+GraphName.__name__ = 'GraphName'
+
+
+class EObject(Ecore.EObject):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        for key, value in kwargs.items():
+            if key not in self.__dict__:
+                setattr(self, key, value)
 
 
 class Node(EObject, metaclass=MetaEClass):
@@ -37,11 +48,8 @@ class Node(EObject, metaclass=MetaEClass):
     parameter = EReference(ordered=True, unique=True,
                            containment=True, derived=False, upper=-1)
 
-    def __init__(self, *, serviceserver=None, publisher=None, subscriber=None, serviceclient=None, actionserver=None, actionclient=None, name=None, parameter=None):
-        # if kwargs:
-        #    raise AttributeError('unexpected arguments: {}'.format(kwargs))
-
-        super().__init__()
+    def __init__(self, *, serviceserver=None, publisher=None, subscriber=None, serviceclient=None, actionserver=None, actionclient=None, name=None, parameter=None, **kwargs):
+        super().__init__(**kwargs)
 
         if name is not None:
             self.name = name
@@ -81,11 +89,8 @@ class Package(EObject, metaclass=MetaEClass):
     dependency = EReference(ordered=True, unique=True,
                             containment=True, derived=False, upper=-1)
 
-    def __init__(self, *, name=None, spec=None, artifact=None, fromGitRepo=None, dependency=None):
-        # if kwargs:
-        #    raise AttributeError('unexpected arguments: {}'.format(kwargs))
-
-        super().__init__()
+    def __init__(self, *, name=None, spec=None, artifact=None, fromGitRepo=None, dependency=None, **kwargs):
+        super().__init__(**kwargs)
 
         if name is not None:
             self.name = name
@@ -106,11 +111,8 @@ class Package(EObject, metaclass=MetaEClass):
 @abstract
 class Dependency(EObject, metaclass=MetaEClass):
 
-    def __init__(self):
-        # if kwargs:
-        #    raise AttributeError('unexpected arguments: {}'.format(kwargs))
-
-        super().__init__()
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
 
 class Artifact(EObject, metaclass=MetaEClass):
@@ -120,11 +122,8 @@ class Artifact(EObject, metaclass=MetaEClass):
     node = EReference(ordered=True, unique=True,
                       containment=True, derived=False)
 
-    def __init__(self, *, name=None, node=None):
-        # if kwargs:
-        #    raise AttributeError('unexpected arguments: {}'.format(kwargs))
-
-        super().__init__()
+    def __init__(self, *, name=None, node=None, **kwargs):
+        super().__init__(**kwargs)
 
         if name is not None:
             self.name = name
@@ -143,11 +142,8 @@ class SpecBase(EObject, metaclass=MetaEClass):
     package = EReference(ordered=True, unique=True,
                          containment=False, derived=False)
 
-    def __init__(self, *, name=None, package=None, fullname=None):
-        # if kwargs:
-        #    raise AttributeError('unexpected arguments: {}'.format(kwargs))
-
-        super().__init__()
+    def __init__(self, *, name=None, package=None, fullname=None, **kwargs):
+        super().__init__(**kwargs)
 
         if name is not None:
             self.name = name
@@ -164,11 +160,8 @@ class PackageSet(EObject, metaclass=MetaEClass):
     package = EReference(ordered=True, unique=True,
                          containment=True, derived=False, upper=-1)
 
-    def __init__(self, *, package=None):
-        # if kwargs:
-        #    raise AttributeError('unexpected arguments: {}'.format(kwargs))
-
-        super().__init__()
+    def __init__(self, *, package=None, **kwargs):
+        super().__init__(**kwargs)
 
         if package:
             self.package.extend(package)
@@ -179,11 +172,8 @@ class MessageDefinition(EObject, metaclass=MetaEClass):
     MessagePart = EReference(ordered=True, unique=True,
                              containment=True, derived=False, upper=-1)
 
-    def __init__(self, *, MessagePart=None):
-        # if kwargs:
-        #    raise AttributeError('unexpected arguments: {}'.format(kwargs))
-
-        super().__init__()
+    def __init__(self, *, MessagePart=None, **kwargs):
+        super().__init__(**kwargs)
 
         if MessagePart:
             self.MessagePart.extend(MessagePart)
@@ -195,11 +185,8 @@ class Namespace(EObject, metaclass=MetaEClass):
     parts = EAttribute(eType=GraphName, unique=False,
                        derived=False, changeable=True, upper=-1)
 
-    def __init__(self, *, parts=None):
-        # if kwargs:
-        #    raise AttributeError('unexpected arguments: {}'.format(kwargs))
-
-        super().__init__()
+    def __init__(self, *, parts=None, **kwargs):
+        super().__init__(**kwargs)
 
         if parts:
             self.parts.extend(parts)
@@ -214,11 +201,8 @@ class InterfaceType(EObject, metaclass=MetaEClass):
     qos = EReference(ordered=True, unique=True,
                      containment=True, derived=False)
 
-    def __init__(self, *, namespace=None, name=None, qos=None):
-        # if kwargs:
-        #    raise AttributeError('unexpected arguments: {}'.format(kwargs))
-
-        super().__init__()
+    def __init__(self, *, namespace=None, name=None, qos=None, **kwargs):
+        super().__init__(**kwargs)
 
         if name is not None:
             self.name = name
@@ -233,11 +217,8 @@ class InterfaceType(EObject, metaclass=MetaEClass):
 @abstract
 class ParameterType(EObject, metaclass=MetaEClass):
 
-    def __init__(self):
-        # if kwargs:
-        #    raise AttributeError('unexpected arguments: {}'.format(kwargs))
-
-        super().__init__()
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
 
 class ParameterStructTypeMember(EObject, metaclass=MetaEClass):
@@ -249,11 +230,8 @@ class ParameterStructTypeMember(EObject, metaclass=MetaEClass):
     default = EReference(ordered=True, unique=True,
                          containment=True, derived=False)
 
-    def __init__(self, *, name=None, type=None, default=None):
-        # if kwargs:
-        #    raise AttributeError('unexpected arguments: {}'.format(kwargs))
-
-        super().__init__()
+    def __init__(self, *, name=None, type=None, default=None, **kwargs):
+        super().__init__(**kwargs)
 
         if name is not None:
             self.name = name
@@ -268,11 +246,8 @@ class ParameterStructTypeMember(EObject, metaclass=MetaEClass):
 @abstract
 class ParameterValue(EObject, metaclass=MetaEClass):
 
-    def __init__(self):
-        # if kwargs:
-        #    raise AttributeError('unexpected arguments: {}'.format(kwargs))
-
-        super().__init__()
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
 
 class ParameterStructMember(EObject, metaclass=MetaEClass):
@@ -282,11 +257,8 @@ class ParameterStructMember(EObject, metaclass=MetaEClass):
     value = EReference(ordered=True, unique=True,
                        containment=True, derived=False)
 
-    def __init__(self, *, name=None, value=None):
-        # if kwargs:
-        #    raise AttributeError('unexpected arguments: {}'.format(kwargs))
-
-        super().__init__()
+    def __init__(self, *, name=None, value=None, **kwargs):
+        super().__init__(**kwargs)
 
         if name is not None:
             self.name = name
@@ -307,11 +279,8 @@ class QualityOfService(EObject, metaclass=MetaEClass):
     Durability = EAttribute(eType=EString, unique=True, derived=False,
                             changeable=True, default_value='transient_local')
 
-    def __init__(self, *, QoSProfile=None, History=None, Depth=None, Reliability=None, Durability=None):
-        # if kwargs:
-        #    raise AttributeError('unexpected arguments: {}'.format(kwargs))
-
-        super().__init__()
+    def __init__(self, *, QoSProfile=None, History=None, Depth=None, Reliability=None, Durability=None, **kwargs):
+        super().__init__(**kwargs)
 
         if QoSProfile is not None:
             self.QoSProfile = QoSProfile
@@ -337,7 +306,6 @@ class ServiceSpec(SpecBase):
                           containment=True, derived=False)
 
     def __init__(self, *, request=None, response=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if request is not None:
@@ -353,7 +321,6 @@ class ServiceServer(InterfaceType):
                          containment=False, derived=False)
 
     def __init__(self, *, service=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if service is not None:
@@ -366,7 +333,6 @@ class TopicSpec(SpecBase):
                          containment=True, derived=False)
 
     def __init__(self, *, message=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if message is not None:
@@ -379,7 +345,6 @@ class PackageDependency(Dependency):
                          containment=False, derived=False)
 
     def __init__(self, *, package=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if package is not None:
@@ -392,7 +357,6 @@ class ExternalDependency(Dependency):
                       derived=False, changeable=True)
 
     def __init__(self, *, name=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if name is not None:
@@ -402,7 +366,6 @@ class ExternalDependency(Dependency):
 class CatkinPackage(Package):
 
     def __init__(self, **kwargs):
-
         super().__init__(**kwargs)
 
 
@@ -412,7 +375,6 @@ class Publisher(InterfaceType):
                          containment=False, derived=False)
 
     def __init__(self, *, message=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if message is not None:
@@ -425,7 +387,6 @@ class Subscriber(InterfaceType):
                          containment=False, derived=False)
 
     def __init__(self, *, message=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if message is not None:
@@ -438,7 +399,6 @@ class ServiceClient(InterfaceType):
                          containment=False, derived=False)
 
     def __init__(self, *, service=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if service is not None:
@@ -455,7 +415,6 @@ class ActionSpec(SpecBase):
                           containment=True, derived=False)
 
     def __init__(self, *, goal=None, result=None, feedback=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if goal is not None:
@@ -474,7 +433,6 @@ class ActionServer(InterfaceType):
                         containment=False, derived=False)
 
     def __init__(self, *, action=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if action is not None:
@@ -487,7 +445,6 @@ class ActionClient(InterfaceType):
                         containment=False, derived=False)
 
     def __init__(self, *, action=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if action is not None:
@@ -497,14 +454,12 @@ class ActionClient(InterfaceType):
 class GlobalNamespace(Namespace):
 
     def __init__(self, **kwargs):
-
         super().__init__(**kwargs)
 
 
 class RelativeNamespace(Namespace):
 
     def __init__(self, **kwargs):
-
         super().__init__(**kwargs)
 
 
@@ -516,7 +471,6 @@ class ParameterListType(ParameterType):
                          containment=True, derived=False)
 
     def __init__(self, *, sequence=None, default=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if sequence:
@@ -532,7 +486,6 @@ class ParameterStructType(ParameterType):
         ordered=True, unique=True, containment=True, derived=False, upper=-1)
 
     def __init__(self, *, parameterstructypetmember=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if parameterstructypetmember:
@@ -545,7 +498,6 @@ class ParameterIntegerType(ParameterType):
                          containment=True, derived=False)
 
     def __init__(self, *, default=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if default is not None:
@@ -558,7 +510,6 @@ class ParameterStringType(ParameterType):
                          containment=True, derived=False)
 
     def __init__(self, *, default=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if default is not None:
@@ -571,7 +522,6 @@ class ParameterDoubleType(ParameterType):
                          containment=True, derived=False)
 
     def __init__(self, *, default=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if default is not None:
@@ -586,7 +536,6 @@ class Parameter(InterfaceType):
                        containment=True, derived=False)
 
     def __init__(self, *, type=None, value=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if type is not None:
@@ -602,7 +551,6 @@ class ParameterDateType(ParameterType):
                          containment=True, derived=False)
 
     def __init__(self, *, default=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if default is not None:
@@ -615,7 +563,6 @@ class ParameterBooleanType(ParameterType):
                          containment=True, derived=False)
 
     def __init__(self, *, default=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if default is not None:
@@ -628,7 +575,6 @@ class ParameterBase64Type(ParameterType):
                          containment=True, derived=False)
 
     def __init__(self, *, default=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if default is not None:
@@ -641,7 +587,6 @@ class ParameterAnyType(ParameterType):
                          containment=True, derived=False)
 
     def __init__(self, *, default=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if default is not None:
@@ -656,7 +601,6 @@ class ParameterArrayType(ParameterType):
                          containment=True, derived=False)
 
     def __init__(self, *, type=None, default=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if type is not None:
@@ -672,7 +616,6 @@ class ParameterAny(ParameterValue):
                        derived=False, changeable=True)
 
     def __init__(self, *, value=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if value is not None:
@@ -685,7 +628,6 @@ class ParameterString(ParameterValue):
                        derived=False, changeable=True)
 
     def __init__(self, *, value=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if value is not None:
@@ -698,7 +640,6 @@ class ParameterBase64(ParameterValue):
                        derived=False, changeable=True)
 
     def __init__(self, *, value=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if value is not None:
@@ -711,7 +652,6 @@ class ParameterInteger(ParameterValue):
                        derived=False, changeable=True)
 
     def __init__(self, *, value=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if value is not None:
@@ -724,7 +664,6 @@ class ParameterDouble(ParameterValue):
                        derived=False, changeable=True)
 
     def __init__(self, *, value=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if value is not None:
@@ -737,7 +676,6 @@ class ParameterBoolean(ParameterValue):
                        derived=False, changeable=True)
 
     def __init__(self, *, value=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if value is not None:
@@ -750,7 +688,6 @@ class ParameterSequence(ParameterValue):
                        containment=True, derived=False, upper=-1)
 
     def __init__(self, *, value=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if value:
@@ -763,7 +700,6 @@ class ParameterStruct(ParameterValue):
                        containment=True, derived=False, upper=-1)
 
     def __init__(self, *, value=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if value:
@@ -776,7 +712,6 @@ class ParameterDate(ParameterValue):
                        derived=False, changeable=True)
 
     def __init__(self, *, value=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if value is not None:
@@ -786,7 +721,6 @@ class ParameterDate(ParameterValue):
 class AmentPackage(Package):
 
     def __init__(self, **kwargs):
-
         super().__init__(**kwargs)
 
 
@@ -796,7 +730,6 @@ class TopicSpecRef(AbstractType):
                            containment=False, derived=False)
 
     def __init__(self, *, TopicSpec=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if TopicSpec is not None:
@@ -809,7 +742,6 @@ class ArrayTopicSpecRef(AbstractType):
                            containment=False, derived=False)
 
     def __init__(self, *, TopicSpec=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if TopicSpec is not None:
@@ -819,5 +751,4 @@ class ArrayTopicSpecRef(AbstractType):
 class PrivateNamespace(RelativeNamespace):
 
     def __init__(self, **kwargs):
-
         super().__init__(**kwargs)

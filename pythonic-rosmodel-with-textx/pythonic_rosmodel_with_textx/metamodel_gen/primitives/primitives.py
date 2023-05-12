@@ -14,14 +14,19 @@ eClassifiers = {}
 getEClassifier = partial(Ecore.getEClassifier, searchspace=eClassifiers)
 
 
+class EObject(Ecore.EObject):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        for key, value in kwargs.items():
+            if key not in self.__dict__:
+                setattr(self, key, value)
+
+
 @abstract
 class AbstractType(EObject, metaclass=MetaEClass):
 
-    def __init__(self):
-        # if kwargs:
-        #    raise AttributeError('unexpected arguments: {}'.format(kwargs))
-
-        super().__init__()
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
 
 class MessagePart(EObject, metaclass=MetaEClass):
@@ -31,11 +36,8 @@ class MessagePart(EObject, metaclass=MetaEClass):
     Type = EReference(ordered=True, unique=True,
                       containment=True, derived=False)
 
-    def __init__(self, *, Type=None, Data=None):
-        # if kwargs:
-        #    raise AttributeError('unexpected arguments: {}'.format(kwargs))
-
-        super().__init__()
+    def __init__(self, *, Type=None, Data=None, **kwargs):
+        super().__init__(**kwargs)
 
         if Data is not None:
             self.Data = Data
@@ -47,201 +49,172 @@ class MessagePart(EObject, metaclass=MetaEClass):
 class bool(AbstractType):
 
     def __init__(self, **kwargs):
-
         super().__init__(**kwargs)
 
 
 class int8(AbstractType):
 
     def __init__(self, **kwargs):
-
         super().__init__(**kwargs)
 
 
 class uint8(AbstractType):
 
     def __init__(self, **kwargs):
-
         super().__init__(**kwargs)
 
 
 class int16(AbstractType):
 
     def __init__(self, **kwargs):
-
         super().__init__(**kwargs)
 
 
 class uint16(AbstractType):
 
     def __init__(self, **kwargs):
-
         super().__init__(**kwargs)
 
 
 class int32(AbstractType):
 
     def __init__(self, **kwargs):
-
         super().__init__(**kwargs)
 
 
 class uint32(AbstractType):
 
     def __init__(self, **kwargs):
-
         super().__init__(**kwargs)
 
 
 class int64(AbstractType):
 
     def __init__(self, **kwargs):
-
         super().__init__(**kwargs)
 
 
 class uint64(AbstractType):
 
     def __init__(self, **kwargs):
-
         super().__init__(**kwargs)
 
 
 class float32(AbstractType):
 
     def __init__(self, **kwargs):
-
         super().__init__(**kwargs)
 
 
 class float64(AbstractType):
 
     def __init__(self, **kwargs):
-
         super().__init__(**kwargs)
 
 
 class string(AbstractType):
 
     def __init__(self, **kwargs):
-
         super().__init__(**kwargs)
 
 
 class time(AbstractType):
 
     def __init__(self, **kwargs):
-
         super().__init__(**kwargs)
 
 
 class duration(AbstractType):
 
     def __init__(self, **kwargs):
-
         super().__init__(**kwargs)
 
 
 class boolArray(AbstractType):
 
     def __init__(self, **kwargs):
-
         super().__init__(**kwargs)
 
 
 class int8Array(AbstractType):
 
     def __init__(self, **kwargs):
-
         super().__init__(**kwargs)
 
 
 class uint8Array(AbstractType):
 
     def __init__(self, **kwargs):
-
         super().__init__(**kwargs)
 
 
 class int16Array(AbstractType):
 
     def __init__(self, **kwargs):
-
         super().__init__(**kwargs)
 
 
 class uint16Array(AbstractType):
 
     def __init__(self, **kwargs):
-
         super().__init__(**kwargs)
 
 
 class int32Array(AbstractType):
 
     def __init__(self, **kwargs):
-
         super().__init__(**kwargs)
 
 
 class uint32Array(AbstractType):
 
     def __init__(self, **kwargs):
-
         super().__init__(**kwargs)
 
 
 class int64Array(AbstractType):
 
     def __init__(self, **kwargs):
-
         super().__init__(**kwargs)
 
 
 class uint64Array(AbstractType):
 
     def __init__(self, **kwargs):
-
         super().__init__(**kwargs)
 
 
 class float32Array(AbstractType):
 
     def __init__(self, **kwargs):
-
         super().__init__(**kwargs)
 
 
 class float64Array(AbstractType):
 
     def __init__(self, **kwargs):
-
         super().__init__(**kwargs)
 
 
 class stringArray(AbstractType):
 
     def __init__(self, **kwargs):
-
         super().__init__(**kwargs)
 
 
 class Header(AbstractType):
 
     def __init__(self, **kwargs):
-
         super().__init__(**kwargs)
 
 
 class Byte(AbstractType):
 
     def __init__(self, **kwargs):
-
         super().__init__(**kwargs)
 
 
 class ByteArray(AbstractType):
 
     def __init__(self, **kwargs):
-
         super().__init__(**kwargs)

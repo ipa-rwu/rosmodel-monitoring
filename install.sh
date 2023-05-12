@@ -11,7 +11,9 @@ if [ ! -d venv ]; then
 fi
 
 venv/*/pip install -e textx-pyecoregen
+venv/*/pip install -e pythonic-rosmodel-with-textx
 venv/*/pip install -e pythonic-rosmodel
 
 venv/*/pip install --find-links wheels -e textx-pyecoregen
+venv/*/pip install --find-links wheels -e pythonic-rosmodel-with-textx
 venv/*/pip install --find-links wheels -e pythonic-rosmodel

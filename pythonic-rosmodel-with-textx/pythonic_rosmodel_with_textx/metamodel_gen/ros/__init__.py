@@ -1,5 +1,5 @@
-
-from pythonic_rosmodel.metamodel_gen.primitives import MessagePart
+from pyecore.resources import global_registry
+from pythonic_rosmodel_with_textx.metamodel_gen.primitives import MessagePart
 
 from . import ros
 from .ros import (ActionClient, ActionServer, ActionSpec, AmentPackage,
@@ -91,3 +91,11 @@ for classif in eClassifiers.values():
 
 for subpack in eSubpackages:
     eClass.eSubpackages.append(subpack.eClass)
+
+register_packages = [ros] + eSubpackages
+for pack in register_packages:
+    global_registry[pack.nsURI] = pack
+
+
+classes = [Node, Package, Dependency, ServiceSpec, ServiceServer, TopicSpec, PackageDependency, ExternalDependency, CatkinPackage, Publisher, Artifact, SpecBase, Subscriber, ServiceClient, PackageSet, ActionSpec, ActionServer, ActionClient, MessageDefinition, Namespace, GlobalNamespace, RelativeNamespace, PrivateNamespace, InterfaceType, GraphName, ParameterType, ParameterListType, ParameterStructType, ParameterIntegerType,
+           ParameterStringType, ParameterDoubleType, Parameter, ParameterDateType, ParameterBooleanType, ParameterBase64Type, ParameterAnyType, ParameterStructTypeMember, ParameterArrayType, ParameterValue, ParameterAny, ParameterString, ParameterBase64, ParameterInteger, ParameterDouble, ParameterBoolean, ParameterSequence, ParameterStruct, ParameterStructMember, ParameterDate, AmentPackage, QualityOfService, TopicSpecRef, ArrayTopicSpecRef]
