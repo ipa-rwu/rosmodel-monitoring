@@ -1,5 +1,5 @@
 from pyecore.resources import global_registry
-from pythonic_rosmodel.metamodel_gen.primitives import MessagePart
+from pythonic_rosmodel_with_textx.metamodel_gen.primitives import MessagePart
 
 from . import ros
 from .ros import (ActionClient, ActionServer, ActionSpec, AmentPackage,

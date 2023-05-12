@@ -4,7 +4,7 @@ from functools import partial
 import pyecore.ecore as Ecore
 from pyecore.ecore import *
 from pyecore.type import Base64Binary, Boolean, DateTime, Double, Int
-from pythonic_rosmodel.metamodel_gen.primitives import AbstractType
+from pythonic_rosmodel_with_textx.metamodel_gen.primitives import AbstractType
 
 name = 'ros'
 nsURI = 'http://www.ipa.fraunhofer.de/ros'

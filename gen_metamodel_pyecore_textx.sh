@@ -1,7 +1,9 @@
 #!/bin/bash
-METAMODEL_REPO=ipa-nhg/ros-model
-METAMODEL_BRANCH=YamlMigrationSystem
-METAMODEL_FOLDER=pythonic-rosmodel/pythonic_rosmodel/metamodel_gen
+METAMODEL_REPO=ipa320/ros-model
+METAMODEL_BRANCH=main
+PYTHON_PKG_NAME=pythonic_rosmodel_with_textx
+PKG_FOLDER=pythonic-rosmodel-with-textx
+METAMODEL_FOLDER=${PKG_FOLDER}/${PYTHON_PKG_NAME}/metamodel_gen
 
 METAMODEL_REPO=${1:-$METAMODEL_REPO}
 METAMODEL_BRANCH=${2:-$METAMODEL_BRANCH}
@@ -29,10 +31,10 @@ function run_python {
 run_python -m textx_pyecoregen.cli --ecore-model https://raw.githubusercontent.com/"$METAMODEL_REPO"/"$METAMODEL_BRANCH"/plugins/de.fraunhofer.ipa.ros/model/ros.ecore -o "$METAMODEL_FOLDER"  --auto-register-package --with-dependencies
 
 # fix python module name
-sed -i 's/^from primitives/from pythonic_rosmodel.metamodel_gen.primitives/' pythonic-rosmodel/pythonic_rosmodel/metamodel_gen/ros/__init__.py
-sed -i 's/^from primitives/from pythonic_rosmodel.metamodel_gen.primitives/' pythonic-rosmodel/pythonic_rosmodel/metamodel_gen/ros/ros.py
-sed -i 's/^from type/from pyecore.type/' pythonic-rosmodel/pythonic_rosmodel/metamodel_gen/ros/ros.py
+sed -i "s/^from primitives/from ${PYTHON_PKG_NAME}.metamodel_gen.primitives/" ${PKG_FOLDER}/${PYTHON_PKG_NAME}/metamodel_gen/ros/__init__.py
+sed -i "s/^from primitives/from ${PYTHON_PKG_NAME}.metamodel_gen.primitives/" ${PKG_FOLDER}/${PYTHON_PKG_NAME}/metamodel_gen/ros/ros.py
+sed -i "s/^from type/from pyecore.type/" ${PKG_FOLDER}/${PYTHON_PKG_NAME}/metamodel_gen/ros/ros.py
 
-isort pythonic-rosmodel/pythonic_rosmodel/metamodel_gen
+isort ${PKG_FOLDER}/${PYTHON_PKG_NAME}/metamodel_gen
 
-find pythonic-rosmodel/pythonic_rosmodel/metamodel_gen -name '*.py' -exec autopep8 --in-place '{}' \;
+find ${PKG_FOLDER}/${PYTHON_PKG_NAME}/metamodel_gen -name '*.py' -exec autopep8 --in-place '{}' \;
