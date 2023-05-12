@@ -37,11 +37,23 @@ jobs:
       - name: Install packages
         run: |
           ./install.sh
+      - name: Generate pyecore for textx from emf
+        run: |
+          venv/*/pip install autopep8
+          venv/*/pip install isort
+          ./gen_metamodel_pyecore_textx.sh ipa320/ros-model main pythonic-rosmodel-with-textx/pythonic_rosmodel_with_textx/metamodel_gen
+          status=$(git status --porcelain)
+          if [ -n "${status// }" ];
+          then
+            echo "Error, the  following files need to be updated and committed:";
+            echo "$status"; git diff;
+            exit 1;
+          fi
       - name: Generate pyecore from emf
         run: |
           venv/*/pip install autopep8
           venv/*/pip install isort
-          ./gen_metamodel_pyecore.sh ipa-rwu/ros-model rwu/fix/YamlMigrationSystem pythonic-rosmodel/pythonic_rosmodel/metamodel_gen
+          ./gen_metamodel_pyecore.sh ipa320/ros-model main pythonic-rosmodel/pythonic_rosmodel/metamodel_gen
           status=$(git status --porcelain)
           if [ -n "${status// }" ];
           then
