@@ -6,38 +6,54 @@ from pyecore.ecore import *
 from pyecore.type import Base64Binary, Boolean, DateTime, Double, Int
 from pythonic_rosmodel.metamodel_gen.primitives import AbstractType
 
-name = 'ros'
-nsURI = 'http://www.ipa.fraunhofer.de/ros'
-nsPrefix = 'ros'
+name = "ros"
+nsURI = "http://www.ipa.fraunhofer.de/ros"
+nsPrefix = "ros"
 
 eClass = EPackage(name=name, nsURI=nsURI, nsPrefix=nsPrefix)
 
 eClassifiers = {}
 getEClassifier = partial(Ecore.getEClassifier, searchspace=eClassifiers)
 
-GraphName = EDataType('GraphName', instanceClassName='java.lang.String')
+GraphName = EDataType("GraphName", instanceClassName="java.lang.String")
 
 
 class Node(EObject, metaclass=MetaEClass):
-
-    name = EAttribute(eType=GraphName, unique=True,
-                      derived=False, changeable=True)
+    name = EAttribute(eType=GraphName, unique=True, derived=False, changeable=True)
     serviceserver = EReference(
-        ordered=True, unique=True, containment=True, derived=False, upper=-1)
-    publisher = EReference(ordered=True, unique=True,
-                           containment=True, derived=False, upper=-1)
-    subscriber = EReference(ordered=True, unique=True,
-                            containment=True, derived=False, upper=-1)
+        ordered=True, unique=True, containment=True, derived=False, upper=-1
+    )
+    publisher = EReference(
+        ordered=True, unique=True, containment=True, derived=False, upper=-1
+    )
+    subscriber = EReference(
+        ordered=True, unique=True, containment=True, derived=False, upper=-1
+    )
     serviceclient = EReference(
-        ordered=True, unique=True, containment=True, derived=False, upper=-1)
+        ordered=True, unique=True, containment=True, derived=False, upper=-1
+    )
     actionserver = EReference(
-        ordered=True, unique=True, containment=True, derived=False, upper=-1)
+        ordered=True, unique=True, containment=True, derived=False, upper=-1
+    )
     actionclient = EReference(
-        ordered=True, unique=True, containment=True, derived=False, upper=-1)
-    parameter = EReference(ordered=True, unique=True,
-                           containment=True, derived=False, upper=-1)
+        ordered=True, unique=True, containment=True, derived=False, upper=-1
+    )
+    parameter = EReference(
+        ordered=True, unique=True, containment=True, derived=False, upper=-1
+    )
 
-    def __init__(self, *, serviceserver=None, publisher=None, subscriber=None, serviceclient=None, actionserver=None, actionclient=None, name=None, parameter=None):
+    def __init__(
+        self,
+        *,
+        serviceserver=None,
+        publisher=None,
+        subscriber=None,
+        serviceclient=None,
+        actionserver=None,
+        actionclient=None,
+        name=None,
+        parameter=None
+    ):
         # if kwargs:
         #    raise AttributeError('unexpected arguments: {}'.format(kwargs))
 
@@ -69,19 +85,23 @@ class Node(EObject, metaclass=MetaEClass):
 
 
 class Package(EObject, metaclass=MetaEClass):
+    name = EAttribute(
+        eType=EString, unique=True, derived=False, changeable=True, iD=True
+    )
+    fromGitRepo = EAttribute(eType=EString, unique=True, derived=False, changeable=True)
+    spec = EReference(
+        ordered=True, unique=True, containment=True, derived=False, upper=-1
+    )
+    artifact = EReference(
+        ordered=True, unique=True, containment=True, derived=False, upper=-1
+    )
+    dependency = EReference(
+        ordered=True, unique=True, containment=True, derived=False, upper=-1
+    )
 
-    name = EAttribute(eType=EString, unique=True,
-                      derived=False, changeable=True, iD=True)
-    fromGitRepo = EAttribute(eType=EString, unique=True,
-                             derived=False, changeable=True)
-    spec = EReference(ordered=True, unique=True,
-                      containment=True, derived=False, upper=-1)
-    artifact = EReference(ordered=True, unique=True,
-                          containment=True, derived=False, upper=-1)
-    dependency = EReference(ordered=True, unique=True,
-                            containment=True, derived=False, upper=-1)
-
-    def __init__(self, *, name=None, spec=None, artifact=None, fromGitRepo=None, dependency=None):
+    def __init__(
+        self, *, name=None, spec=None, artifact=None, fromGitRepo=None, dependency=None
+    ):
         # if kwargs:
         #    raise AttributeError('unexpected arguments: {}'.format(kwargs))
 
@@ -105,7 +125,6 @@ class Package(EObject, metaclass=MetaEClass):
 
 @abstract
 class Dependency(EObject, metaclass=MetaEClass):
-
     def __init__(self):
         # if kwargs:
         #    raise AttributeError('unexpected arguments: {}'.format(kwargs))
@@ -114,11 +133,8 @@ class Dependency(EObject, metaclass=MetaEClass):
 
 
 class Artifact(EObject, metaclass=MetaEClass):
-
-    name = EAttribute(eType=EString, unique=True,
-                      derived=False, changeable=True)
-    node = EReference(ordered=True, unique=True,
-                      containment=True, derived=False)
+    name = EAttribute(eType=EString, unique=True, derived=False, changeable=True)
+    node = EReference(ordered=True, unique=True, containment=True, derived=False)
 
     def __init__(self, *, name=None, node=None):
         # if kwargs:
@@ -135,13 +151,16 @@ class Artifact(EObject, metaclass=MetaEClass):
 
 @abstract
 class SpecBase(EObject, metaclass=MetaEClass):
-
-    name = EAttribute(eType=EString, unique=False,
-                      derived=False, changeable=True)
-    fullname = EAttribute(eType=EString, unique=True, derived=False,
-                          changeable=False, iD=True, transient=True)
-    package = EReference(ordered=True, unique=True,
-                         containment=False, derived=False)
+    name = EAttribute(eType=EString, unique=False, derived=False, changeable=True)
+    fullname = EAttribute(
+        eType=EString,
+        unique=True,
+        derived=False,
+        changeable=False,
+        iD=True,
+        transient=True,
+    )
+    package = EReference(ordered=True, unique=True, containment=False, derived=False)
 
     def __init__(self, *, name=None, package=None, fullname=None):
         # if kwargs:
@@ -160,9 +179,9 @@ class SpecBase(EObject, metaclass=MetaEClass):
 
 
 class PackageSet(EObject, metaclass=MetaEClass):
-
-    package = EReference(ordered=True, unique=True,
-                         containment=True, derived=False, upper=-1)
+    package = EReference(
+        ordered=True, unique=True, containment=True, derived=False, upper=-1
+    )
 
     def __init__(self, *, package=None):
         # if kwargs:
@@ -175,9 +194,9 @@ class PackageSet(EObject, metaclass=MetaEClass):
 
 
 class MessageDefinition(EObject, metaclass=MetaEClass):
-
-    MessagePart = EReference(ordered=True, unique=True,
-                             containment=True, derived=False, upper=-1)
+    MessagePart = EReference(
+        ordered=True, unique=True, containment=True, derived=False, upper=-1
+    )
 
     def __init__(self, *, MessagePart=None):
         # if kwargs:
@@ -191,9 +210,9 @@ class MessageDefinition(EObject, metaclass=MetaEClass):
 
 @abstract
 class Namespace(EObject, metaclass=MetaEClass):
-
-    parts = EAttribute(eType=GraphName, unique=False,
-                       derived=False, changeable=True, upper=-1)
+    parts = EAttribute(
+        eType=GraphName, unique=False, derived=False, changeable=True, upper=-1
+    )
 
     def __init__(self, *, parts=None):
         # if kwargs:
@@ -206,13 +225,9 @@ class Namespace(EObject, metaclass=MetaEClass):
 
 
 class InterfaceType(EObject, metaclass=MetaEClass):
-
-    name = EAttribute(eType=GraphName, unique=True,
-                      derived=False, changeable=True)
-    namespace = EReference(ordered=True, unique=True,
-                           containment=True, derived=False)
-    qos = EReference(ordered=True, unique=True,
-                     containment=True, derived=False)
+    name = EAttribute(eType=GraphName, unique=True, derived=False, changeable=True)
+    namespace = EReference(ordered=True, unique=True, containment=True, derived=False)
+    qos = EReference(ordered=True, unique=True, containment=True, derived=False)
 
     def __init__(self, *, namespace=None, name=None, qos=None):
         # if kwargs:
@@ -232,7 +247,6 @@ class InterfaceType(EObject, metaclass=MetaEClass):
 
 @abstract
 class ParameterType(EObject, metaclass=MetaEClass):
-
     def __init__(self):
         # if kwargs:
         #    raise AttributeError('unexpected arguments: {}'.format(kwargs))
@@ -241,13 +255,9 @@ class ParameterType(EObject, metaclass=MetaEClass):
 
 
 class ParameterStructTypeMember(EObject, metaclass=MetaEClass):
-
-    name = EAttribute(eType=EString, unique=True,
-                      derived=False, changeable=True)
-    type = EReference(ordered=True, unique=True,
-                      containment=True, derived=False)
-    default = EReference(ordered=True, unique=True,
-                         containment=True, derived=False)
+    name = EAttribute(eType=EString, unique=True, derived=False, changeable=True)
+    type = EReference(ordered=True, unique=True, containment=True, derived=False)
+    default = EReference(ordered=True, unique=True, containment=True, derived=False)
 
     def __init__(self, *, name=None, type=None, default=None):
         # if kwargs:
@@ -267,7 +277,6 @@ class ParameterStructTypeMember(EObject, metaclass=MetaEClass):
 
 @abstract
 class ParameterValue(EObject, metaclass=MetaEClass):
-
     def __init__(self):
         # if kwargs:
         #    raise AttributeError('unexpected arguments: {}'.format(kwargs))
@@ -276,11 +285,8 @@ class ParameterValue(EObject, metaclass=MetaEClass):
 
 
 class ParameterStructMember(EObject, metaclass=MetaEClass):
-
-    name = EAttribute(eType=EString, unique=True,
-                      derived=False, changeable=True)
-    value = EReference(ordered=True, unique=True,
-                       containment=True, derived=False)
+    name = EAttribute(eType=EString, unique=True, derived=False, changeable=True)
+    value = EReference(ordered=True, unique=True, containment=True, derived=False)
 
     def __init__(self, *, name=None, value=None):
         # if kwargs:
@@ -296,18 +302,45 @@ class ParameterStructMember(EObject, metaclass=MetaEClass):
 
 
 class QualityOfService(EObject, metaclass=MetaEClass):
-
-    QoSProfile = EAttribute(eType=EString, unique=True, derived=False,
-                            changeable=True, default_value='default_qos')
-    History = EAttribute(eType=EString, unique=True, derived=False,
-                         changeable=True, default_value='keep_all')
+    QoSProfile = EAttribute(
+        eType=EString,
+        unique=True,
+        derived=False,
+        changeable=True,
+        default_value="default_qos",
+    )
+    History = EAttribute(
+        eType=EString,
+        unique=True,
+        derived=False,
+        changeable=True,
+        default_value="keep_all",
+    )
     Depth = EAttribute(eType=Int, unique=True, derived=False, changeable=True)
-    Reliability = EAttribute(eType=EString, unique=True, derived=False,
-                             changeable=True, default_value='reliable')
-    Durability = EAttribute(eType=EString, unique=True, derived=False,
-                            changeable=True, default_value='transient_local')
+    Reliability = EAttribute(
+        eType=EString,
+        unique=True,
+        derived=False,
+        changeable=True,
+        default_value="reliable",
+    )
+    Durability = EAttribute(
+        eType=EString,
+        unique=True,
+        derived=False,
+        changeable=True,
+        default_value="transient_local",
+    )
 
-    def __init__(self, *, QoSProfile=None, History=None, Depth=None, Reliability=None, Durability=None):
+    def __init__(
+        self,
+        *,
+        QoSProfile=None,
+        History=None,
+        Depth=None,
+        Reliability=None,
+        Durability=None
+    ):
         # if kwargs:
         #    raise AttributeError('unexpected arguments: {}'.format(kwargs))
 
@@ -330,14 +363,10 @@ class QualityOfService(EObject, metaclass=MetaEClass):
 
 
 class ServiceSpec(SpecBase):
-
-    request = EReference(ordered=True, unique=True,
-                         containment=True, derived=False)
-    response = EReference(ordered=True, unique=True,
-                          containment=True, derived=False)
+    request = EReference(ordered=True, unique=True, containment=True, derived=False)
+    response = EReference(ordered=True, unique=True, containment=True, derived=False)
 
     def __init__(self, *, request=None, response=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if request is not None:
@@ -348,12 +377,9 @@ class ServiceSpec(SpecBase):
 
 
 class ServiceServer(InterfaceType):
-
-    service = EReference(ordered=True, unique=True,
-                         containment=False, derived=False)
+    service = EReference(ordered=True, unique=True, containment=False, derived=False)
 
     def __init__(self, *, service=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if service is not None:
@@ -361,12 +387,9 @@ class ServiceServer(InterfaceType):
 
 
 class TopicSpec(SpecBase):
-
-    message = EReference(ordered=True, unique=True,
-                         containment=True, derived=False)
+    message = EReference(ordered=True, unique=True, containment=True, derived=False)
 
     def __init__(self, *, message=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if message is not None:
@@ -374,12 +397,9 @@ class TopicSpec(SpecBase):
 
 
 class PackageDependency(Dependency):
-
-    package = EReference(ordered=True, unique=True,
-                         containment=False, derived=False)
+    package = EReference(ordered=True, unique=True, containment=False, derived=False)
 
     def __init__(self, *, package=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if package is not None:
@@ -387,12 +407,9 @@ class PackageDependency(Dependency):
 
 
 class ExternalDependency(Dependency):
-
-    name = EAttribute(eType=EString, unique=True,
-                      derived=False, changeable=True)
+    name = EAttribute(eType=EString, unique=True, derived=False, changeable=True)
 
     def __init__(self, *, name=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if name is not None:
@@ -400,19 +417,14 @@ class ExternalDependency(Dependency):
 
 
 class CatkinPackage(Package):
-
     def __init__(self, **kwargs):
-
         super().__init__(**kwargs)
 
 
 class Publisher(InterfaceType):
-
-    message = EReference(ordered=True, unique=True,
-                         containment=False, derived=False)
+    message = EReference(ordered=True, unique=True, containment=False, derived=False)
 
     def __init__(self, *, message=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if message is not None:
@@ -420,12 +432,9 @@ class Publisher(InterfaceType):
 
 
 class Subscriber(InterfaceType):
-
-    message = EReference(ordered=True, unique=True,
-                         containment=False, derived=False)
+    message = EReference(ordered=True, unique=True, containment=False, derived=False)
 
     def __init__(self, *, message=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if message is not None:
@@ -433,12 +442,9 @@ class Subscriber(InterfaceType):
 
 
 class ServiceClient(InterfaceType):
-
-    service = EReference(ordered=True, unique=True,
-                         containment=False, derived=False)
+    service = EReference(ordered=True, unique=True, containment=False, derived=False)
 
     def __init__(self, *, service=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if service is not None:
@@ -446,16 +452,11 @@ class ServiceClient(InterfaceType):
 
 
 class ActionSpec(SpecBase):
-
-    goal = EReference(ordered=True, unique=True,
-                      containment=True, derived=False)
-    result = EReference(ordered=True, unique=True,
-                        containment=True, derived=False)
-    feedback = EReference(ordered=True, unique=True,
-                          containment=True, derived=False)
+    goal = EReference(ordered=True, unique=True, containment=True, derived=False)
+    result = EReference(ordered=True, unique=True, containment=True, derived=False)
+    feedback = EReference(ordered=True, unique=True, containment=True, derived=False)
 
     def __init__(self, *, goal=None, result=None, feedback=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if goal is not None:
@@ -469,12 +470,9 @@ class ActionSpec(SpecBase):
 
 
 class ActionServer(InterfaceType):
-
-    action = EReference(ordered=True, unique=True,
-                        containment=False, derived=False)
+    action = EReference(ordered=True, unique=True, containment=False, derived=False)
 
     def __init__(self, *, action=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if action is not None:
@@ -482,12 +480,9 @@ class ActionServer(InterfaceType):
 
 
 class ActionClient(InterfaceType):
-
-    action = EReference(ordered=True, unique=True,
-                        containment=False, derived=False)
+    action = EReference(ordered=True, unique=True, containment=False, derived=False)
 
     def __init__(self, *, action=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if action is not None:
@@ -495,28 +490,22 @@ class ActionClient(InterfaceType):
 
 
 class GlobalNamespace(Namespace):
-
     def __init__(self, **kwargs):
-
         super().__init__(**kwargs)
 
 
 class RelativeNamespace(Namespace):
-
     def __init__(self, **kwargs):
-
         super().__init__(**kwargs)
 
 
 class ParameterListType(ParameterType):
-
-    sequence = EReference(ordered=True, unique=True,
-                          containment=True, derived=False, upper=-1)
-    default = EReference(ordered=True, unique=True,
-                         containment=True, derived=False)
+    sequence = EReference(
+        ordered=True, unique=True, containment=True, derived=False, upper=-1
+    )
+    default = EReference(ordered=True, unique=True, containment=True, derived=False)
 
     def __init__(self, *, sequence=None, default=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if sequence:
@@ -527,12 +516,11 @@ class ParameterListType(ParameterType):
 
 
 class ParameterStructType(ParameterType):
-
     parameterstructypetmember = EReference(
-        ordered=True, unique=True, containment=True, derived=False, upper=-1)
+        ordered=True, unique=True, containment=True, derived=False, upper=-1
+    )
 
     def __init__(self, *, parameterstructypetmember=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if parameterstructypetmember:
@@ -540,12 +528,9 @@ class ParameterStructType(ParameterType):
 
 
 class ParameterIntegerType(ParameterType):
-
-    default = EReference(ordered=True, unique=True,
-                         containment=True, derived=False)
+    default = EReference(ordered=True, unique=True, containment=True, derived=False)
 
     def __init__(self, *, default=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if default is not None:
@@ -553,12 +538,9 @@ class ParameterIntegerType(ParameterType):
 
 
 class ParameterStringType(ParameterType):
-
-    default = EReference(ordered=True, unique=True,
-                         containment=True, derived=False)
+    default = EReference(ordered=True, unique=True, containment=True, derived=False)
 
     def __init__(self, *, default=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if default is not None:
@@ -566,12 +548,9 @@ class ParameterStringType(ParameterType):
 
 
 class ParameterDoubleType(ParameterType):
-
-    default = EReference(ordered=True, unique=True,
-                         containment=True, derived=False)
+    default = EReference(ordered=True, unique=True, containment=True, derived=False)
 
     def __init__(self, *, default=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if default is not None:
@@ -579,14 +558,10 @@ class ParameterDoubleType(ParameterType):
 
 
 class Parameter(InterfaceType):
-
-    type = EReference(ordered=True, unique=True,
-                      containment=True, derived=False)
-    value = EReference(ordered=True, unique=True,
-                       containment=True, derived=False)
+    type = EReference(ordered=True, unique=True, containment=True, derived=False)
+    value = EReference(ordered=True, unique=True, containment=True, derived=False)
 
     def __init__(self, *, type=None, value=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if type is not None:
@@ -597,12 +572,9 @@ class Parameter(InterfaceType):
 
 
 class ParameterDateType(ParameterType):
-
-    default = EReference(ordered=True, unique=True,
-                         containment=True, derived=False)
+    default = EReference(ordered=True, unique=True, containment=True, derived=False)
 
     def __init__(self, *, default=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if default is not None:
@@ -610,12 +582,9 @@ class ParameterDateType(ParameterType):
 
 
 class ParameterBooleanType(ParameterType):
-
-    default = EReference(ordered=True, unique=True,
-                         containment=True, derived=False)
+    default = EReference(ordered=True, unique=True, containment=True, derived=False)
 
     def __init__(self, *, default=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if default is not None:
@@ -623,12 +592,9 @@ class ParameterBooleanType(ParameterType):
 
 
 class ParameterBase64Type(ParameterType):
-
-    default = EReference(ordered=True, unique=True,
-                         containment=True, derived=False)
+    default = EReference(ordered=True, unique=True, containment=True, derived=False)
 
     def __init__(self, *, default=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if default is not None:
@@ -636,12 +602,9 @@ class ParameterBase64Type(ParameterType):
 
 
 class ParameterAnyType(ParameterType):
-
-    default = EReference(ordered=True, unique=True,
-                         containment=True, derived=False)
+    default = EReference(ordered=True, unique=True, containment=True, derived=False)
 
     def __init__(self, *, default=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if default is not None:
@@ -649,14 +612,10 @@ class ParameterAnyType(ParameterType):
 
 
 class ParameterArrayType(ParameterType):
-
-    type = EReference(ordered=True, unique=True,
-                      containment=True, derived=False)
-    default = EReference(ordered=True, unique=True,
-                         containment=True, derived=False)
+    type = EReference(ordered=True, unique=True, containment=True, derived=False)
+    default = EReference(ordered=True, unique=True, containment=True, derived=False)
 
     def __init__(self, *, type=None, default=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if type is not None:
@@ -667,12 +626,9 @@ class ParameterArrayType(ParameterType):
 
 
 class ParameterAny(ParameterValue):
-
-    value = EAttribute(eType=EString, unique=True,
-                       derived=False, changeable=True)
+    value = EAttribute(eType=EString, unique=True, derived=False, changeable=True)
 
     def __init__(self, *, value=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if value is not None:
@@ -680,12 +636,9 @@ class ParameterAny(ParameterValue):
 
 
 class ParameterString(ParameterValue):
-
-    value = EAttribute(eType=EString, unique=True,
-                       derived=False, changeable=True)
+    value = EAttribute(eType=EString, unique=True, derived=False, changeable=True)
 
     def __init__(self, *, value=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if value is not None:
@@ -693,12 +646,9 @@ class ParameterString(ParameterValue):
 
 
 class ParameterBase64(ParameterValue):
-
-    value = EAttribute(eType=Base64Binary, unique=True,
-                       derived=False, changeable=True)
+    value = EAttribute(eType=Base64Binary, unique=True, derived=False, changeable=True)
 
     def __init__(self, *, value=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if value is not None:
@@ -706,12 +656,11 @@ class ParameterBase64(ParameterValue):
 
 
 class ParameterInteger(ParameterValue):
-
-    value = EAttribute(eType=EIntegerObject, unique=True,
-                       derived=False, changeable=True)
+    value = EAttribute(
+        eType=EIntegerObject, unique=True, derived=False, changeable=True
+    )
 
     def __init__(self, *, value=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if value is not None:
@@ -719,12 +668,9 @@ class ParameterInteger(ParameterValue):
 
 
 class ParameterDouble(ParameterValue):
-
-    value = EAttribute(eType=Double, unique=True,
-                       derived=False, changeable=True)
+    value = EAttribute(eType=Double, unique=True, derived=False, changeable=True)
 
     def __init__(self, *, value=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if value is not None:
@@ -732,12 +678,9 @@ class ParameterDouble(ParameterValue):
 
 
 class ParameterBoolean(ParameterValue):
-
-    value = EAttribute(eType=Boolean, unique=True,
-                       derived=False, changeable=True)
+    value = EAttribute(eType=Boolean, unique=True, derived=False, changeable=True)
 
     def __init__(self, *, value=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if value is not None:
@@ -745,12 +688,11 @@ class ParameterBoolean(ParameterValue):
 
 
 class ParameterSequence(ParameterValue):
-
-    value = EReference(ordered=True, unique=True,
-                       containment=True, derived=False, upper=-1)
+    value = EReference(
+        ordered=True, unique=True, containment=True, derived=False, upper=-1
+    )
 
     def __init__(self, *, value=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if value:
@@ -758,12 +700,11 @@ class ParameterSequence(ParameterValue):
 
 
 class ParameterStruct(ParameterValue):
-
-    value = EReference(ordered=True, unique=True,
-                       containment=True, derived=False, upper=-1)
+    value = EReference(
+        ordered=True, unique=True, containment=True, derived=False, upper=-1
+    )
 
     def __init__(self, *, value=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if value:
@@ -771,12 +712,9 @@ class ParameterStruct(ParameterValue):
 
 
 class ParameterDate(ParameterValue):
-
-    value = EAttribute(eType=DateTime, unique=True,
-                       derived=False, changeable=True)
+    value = EAttribute(eType=DateTime, unique=True, derived=False, changeable=True)
 
     def __init__(self, *, value=None, **kwargs):
-
         super().__init__(**kwargs)
 
         if value is not None:
@@ -784,40 +722,30 @@ class ParameterDate(ParameterValue):
 
 
 class AmentPackage(Package):
-
     def __init__(self, **kwargs):
-
         super().__init__(**kwargs)
 
 
-class TopicSpecRef(AbstractType):
+class TopicSpecMsgRef(AbstractType):
+    Reference = EReference(ordered=True, unique=True, containment=False, derived=False)
 
-    TopicSpec = EReference(ordered=True, unique=True,
-                           containment=False, derived=False)
-
-    def __init__(self, *, TopicSpec=None, **kwargs):
-
+    def __init__(self, *, Reference=None, **kwargs):
         super().__init__(**kwargs)
 
-        if TopicSpec is not None:
-            self.TopicSpec = TopicSpec
+        if Reference is not None:
+            self.Reference = Reference
 
 
-class ArrayTopicSpecRef(AbstractType):
+class ArrayTopicSpecMsgRef(AbstractType):
+    Reference = EReference(ordered=True, unique=True, containment=False, derived=False)
 
-    TopicSpec = EReference(ordered=True, unique=True,
-                           containment=False, derived=False)
-
-    def __init__(self, *, TopicSpec=None, **kwargs):
-
+    def __init__(self, *, Reference=None, **kwargs):
         super().__init__(**kwargs)
 
-        if TopicSpec is not None:
-            self.TopicSpec = TopicSpec
+        if Reference is not None:
+            self.Reference = Reference
 
 
 class PrivateNamespace(RelativeNamespace):
-
     def __init__(self, **kwargs):
-
         super().__init__(**kwargs)
